@@ -1,3 +1,27 @@
 spring:
+  config:
+    import: optional:file:.env[.properties]
   application:
     name: win-amateur
+  datasource:
+    url: ${WIN_AMATEUR_DB_URL}
+    username: ${WIN_AMATEUR_DB_USERNAME}
+    password: ${WIN_AMATEUR_DB_PASSWORD}
+
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+
+win-amateur:
+  cors:
+    allowed-origin-patterns: ${WIN_AMATEUR_CORS_ALLOWED_ORIGIN_PATTERNS}
+  iam:
+    password:
+      minimum-length: ${WIN_AMATEUR_PASSWORD_MINIMUM_LENGTH}
+      maximum-length: ${WIN_AMATEUR_PASSWORD_MAXIMUM_LENGTH}
+      bcrypt-strength: ${WIN_AMATEUR_BCRYPT_STRENGTH}
+    document:
+      supported-types: ${WIN_AMATEUR_SUPPORTED_DOCUMENT_TYPES}
+
+
+
