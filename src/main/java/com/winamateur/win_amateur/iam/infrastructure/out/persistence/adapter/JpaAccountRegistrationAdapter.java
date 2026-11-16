@@ -22,6 +22,7 @@ import com.winamateur.win_amateur.iam.infrastructure.out.persistence.repository.
 import com.winamateur.win_amateur.iam.infrastructure.out.persistence.repository.UserCredentialJpaRepository;
 
 import lombok.RequiredArgsConstructor;
+import io.vavr.control.Try;
 
 @Repository
 @RequiredArgsConstructor
@@ -61,13 +62,14 @@ public class JpaAccountRegistrationAdapter implements IAccountRegistrationPersis
 		UserAccountEntity account = persistenceMapper.toUserAccountEntity(registration);
 		UserCredentialEntity credential = persistenceMapper.toUserCredentialEntity(registration);
 
-		try {
+		Try.run(() -> {
 			personJpaRepository.saveAndFlush(person);
 			userAccountJpaRepository.saveAndFlush(account);
 			userCredentialJpaRepository.saveAndFlush(credential);
-		} catch (DataIntegrityViolationException exception) {
-			throw translateConstraintViolation(exception);
-		}
+		}).recoverWith(
+				DataIntegrityViolationException.class,
+				exception -> Try.failure(translateConstraintViolation(exception)))
+				.get();
 	}
 
 	private RuntimeException translateConstraintViolation(DataIntegrityViolationException exception) {

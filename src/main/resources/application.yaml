@@ -8,6 +8,15 @@ spring:
     username: ${WIN_AMATEUR_DB_USERNAME}
     password: ${WIN_AMATEUR_DB_PASSWORD}
 
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: ${WIN_AMATEUR_JPA_DDL_AUTO}
+    properties:
+      hibernate:
+        hbm2ddl:
+          create_namespaces: true
+
   jackson:
     deserialization:
       fail-on-unknown-properties: true
@@ -22,6 +31,13 @@ win-amateur:
       bcrypt-strength: ${WIN_AMATEUR_BCRYPT_STRENGTH}
     document:
       supported-types: ${WIN_AMATEUR_SUPPORTED_DOCUMENT_TYPES}
+    login:
+      maximum-failed-attempts: ${WIN_AMATEUR_LOGIN_MAXIMUM_FAILED_ATTEMPTS}
+      lock-duration-seconds: ${WIN_AMATEUR_LOGIN_LOCK_DURATION_SECONDS}
+      access-token-validity-seconds: ${WIN_AMATEUR_ACCESS_TOKEN_VALIDITY_SECONDS}
+      refresh-token-validity-seconds: ${WIN_AMATEUR_REFRESH_TOKEN_VALIDITY_SECONDS}
+      token-signing-secret: ${WIN_AMATEUR_TOKEN_SIGNING_SECRET}
+      token-issuer: ${WIN_AMATEUR_TOKEN_ISSUER}
 
 
 

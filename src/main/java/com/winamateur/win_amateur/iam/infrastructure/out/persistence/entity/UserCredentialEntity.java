@@ -10,10 +10,14 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import com.winamateur.win_amateur.iam.domain.model.FailedLoginAttemptResult;
 
 @Entity
 @Table(name = "user_credentials", schema = "iam")
+@Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -40,4 +44,16 @@ public class UserCredentialEntity {
 
 	@Column(name = "updated_at", nullable = false)
 	private LocalDateTime updatedAt;
+
+	public void registerFailedLogin(FailedLoginAttemptResult failedAttempt, LocalDateTime updateTime) {
+		this.failedAttempts = failedAttempt.failedAttempts();
+		this.lockedUntil = failedAttempt.lockedUntil();
+		this.updatedAt = updateTime;
+	}
+
+	public void registerSuccessfulLogin(LocalDateTime updateTime) {
+		this.failedAttempts = 0;
+		this.lockedUntil = null;
+		this.updatedAt = updateTime;
+	}
 }

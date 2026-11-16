@@ -16,4 +16,9 @@ public class BCryptPasswordHasherAdapter implements IPasswordHasherPort {
 	public String hash(String rawPassword) {
 		return passwordEncoder.encode(rawPassword);
 	}
+
+	@Override
+	public boolean matches(String rawPassword, String passwordHash) {
+		return passwordEncoder.matches(rawPassword, passwordHash);
+	}
 }
