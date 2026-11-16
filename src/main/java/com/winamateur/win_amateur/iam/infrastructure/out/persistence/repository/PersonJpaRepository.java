@@ -10,6 +10,8 @@ import com.winamateur.win_amateur.iam.infrastructure.out.persistence.entity.Pers
 
 public interface PersonJpaRepository extends JpaRepository<PersonEntity, UUID> {
 
+	Optional<PersonEntity> findByEmailIgnoreCase(String email);
+
 	Optional<PersonEntity> findByEmailIgnoreCaseAndIdentityStatus(String email, IdentityStatus identityStatus);
 
 	boolean existsByDocumentCountryAndDocumentTypeAndDocumentNumberAndIdentityStatus(

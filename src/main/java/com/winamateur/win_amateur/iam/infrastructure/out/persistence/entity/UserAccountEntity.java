@@ -44,4 +44,15 @@ public class UserAccountEntity {
 
 	@Column(name = "updated_at", nullable = false)
 	private LocalDateTime updatedAt;
+
+	public void registerFailedLogin(AccountStatus accountStatus, LocalDateTime updateTime) {
+		this.status = accountStatus;
+		this.updatedAt = updateTime;
+	}
+
+	public void registerSuccessfulLogin(LocalDateTime loginTime) {
+		this.status = AccountStatus.ACTIVE;
+		this.lastLoginAt = loginTime;
+		this.updatedAt = loginTime;
+	}
 }

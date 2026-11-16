@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.winamateur.win_amateur.iam.domain.exception.DocumentAlreadyExistsException;
 import com.winamateur.win_amateur.iam.domain.exception.EmailAlreadyExistsException;
+import com.winamateur.win_amateur.iam.domain.exception.AccountDisabledException;
+import com.winamateur.win_amateur.iam.domain.exception.AccountLockedException;
+import com.winamateur.win_amateur.iam.domain.exception.InvalidCredentialsException;
 import com.winamateur.win_amateur.iam.domain.exception.PasswordPolicyViolationException;
 import com.winamateur.win_amateur.iam.infrastructure.config.exception.response.ApiErrorResponse;
 
@@ -51,6 +54,33 @@ public class AccountRegistrationExceptionHandler {
 				"PASSWORD_POLICY_VIOLATION",
 				exception.getMessage(),
 				Map.of("password", "Password does not comply with the configured policy"));
+	}
+
+	@ExceptionHandler(InvalidCredentialsException.class)
+	public ResponseEntity<ApiErrorResponse> handleInvalidCredentials(InvalidCredentialsException exception) {
+		return buildResponse(
+				HttpStatus.UNAUTHORIZED,
+				"INVALID_CREDENTIALS",
+				exception.getMessage(),
+				Map.of());
+	}
+
+	@ExceptionHandler(AccountLockedException.class)
+	public ResponseEntity<ApiErrorResponse> handleAccountLocked(AccountLockedException exception) {
+		return buildResponse(
+				HttpStatus.LOCKED,
+				"ACCOUNT_LOCKED",
+				exception.getMessage(),
+				Map.of());
+	}
+
+	@ExceptionHandler(AccountDisabledException.class)
+	public ResponseEntity<ApiErrorResponse> handleAccountDisabled(AccountDisabledException exception) {
+		return buildResponse(
+				HttpStatus.FORBIDDEN,
+				"ACCOUNT_DISABLED",
+				exception.getMessage(),
+				Map.of());
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
